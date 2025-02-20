@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Search, Menu, ShoppingBag } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const Navbar = () => {
   return (
@@ -11,33 +12,37 @@ export const Navbar = () => {
             <Button variant="ghost" size="icon" className="lg:hidden">
               <Menu className="h-6 w-6" />
             </Button>
-            <a href="/" className="text-xl font-semibold text-primary">
+            <Link to="/" className="text-xl font-semibold text-primary">
               Scrapyard
-            </a>
+            </Link>
           </div>
           
           <div className="hidden lg:flex items-center gap-6">
-            <a href="/browse" className="text-sm font-medium hover:text-primary transition-colors">
+            <Link to="/browse" className="text-sm font-medium hover:text-primary transition-colors">
               Browse
-            </a>
-            <a href="/sell" className="text-sm font-medium hover:text-primary transition-colors">
+            </Link>
+            <Link to="/sell" className="text-sm font-medium hover:text-primary transition-colors">
               Sell
-            </a>
-            <a href="/about" className="text-sm font-medium hover:text-primary transition-colors">
+            </Link>
+            <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors">
               About
-            </a>
+            </Link>
           </div>
 
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon">
               <Search className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon">
-              <ShoppingBag className="h-5 w-5" />
-            </Button>
-            <Button variant="default" className="bg-accent hover:bg-accent/90">
-              Sign In
-            </Button>
+            <Link to="/cart">
+              <Button variant="ghost" size="icon">
+                <ShoppingBag className="h-5 w-5" />
+              </Button>
+            </Link>
+            <Link to="/login">
+              <Button variant="default" className="bg-accent hover:bg-accent/90">
+                Sign In
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
