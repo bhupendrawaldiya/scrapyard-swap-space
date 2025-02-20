@@ -1,123 +1,93 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
-import { ProductCard } from "@/components/ProductCard";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const FEATURED_PRODUCTS = [
+const CUSTOMER_REVIEWS = [
   {
     id: 1,
-    title: "Vintage Leather Jacket",
-    price: 120,
-    image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=500",
-    seller: "John Doe",
-    condition: "Like New"
+    name: "Sarah Johnson",
+    review: "Found amazing vintage pieces on Scrapyard! The community is so supportive.",
+    rating: 5
   },
   {
     id: 2,
-    title: "Mechanical Keyboard",
-    price: 85,
-    image: "https://images.unsplash.com/photo-1541140532154-b024d705b90a?auto=format&fit=crop&q=80&w=500",
-    seller: "Jane Smith",
-    condition: "Good"
+    name: "Mike Thompson",
+    review: "Great platform for sustainable shopping. Love the variety of items available.",
+    rating: 5
   },
   {
     id: 3,
-    title: "Retro Camera",
-    price: 150,
-    image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&q=80&w=500",
-    seller: "Mike Wilson",
-    condition: "Excellent"
+    name: "Emily Chen",
+    review: "Scrapyard made selling my pre-loved items so easy. Highly recommended!",
+    rating: 5
   },
   {
     id: 4,
-    title: "Classic Watch",
-    price: 200,
-    image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&q=80&w=500",
-    seller: "Sarah Johnson",
-    condition: "Like New"
-  },
-  {
-    id: 5,
-    title: "Vintage Record Player",
-    price: 175,
-    image: "https://images.unsplash.com/photo-1577375729152-4c8b5fcda381?auto=format&fit=crop&q=80&w=500",
-    seller: "Alex Brown",
-    condition: "Good"
-  },
-  {
-    id: 6,
-    title: "Antique Writing Desk",
-    price: 300,
-    image: "https://images.unsplash.com/photo-1518553552028-b0548c1c74a5?auto=format&fit=crop&q=80&w=500",
-    seller: "Emily Clark",
-    condition: "Excellent"
-  },
-  {
-    id: 7,
-    title: "Polaroid Camera",
-    price: 95,
-    image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&q=80&w=500",
-    seller: "David Wilson",
-    condition: "Like New"
-  },
-  {
-    id: 8,
-    title: "Vintage Bicycle",
-    price: 250,
-    image: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&q=80&w=500",
-    seller: "Lisa Anderson",
-    condition: "Good"
+    name: "David Wilson",
+    review: "The best marketplace for second-hand treasures. Amazing community!",
+    rating: 5
   }
 ];
 
 const Index = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const filteredProducts = FEATURED_PRODUCTS.filter(product =>
-    product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    product.seller.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    product.condition.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-secondary/30">
       <Navbar />
-      <main className="container mx-auto px-4 pt-24 pb-12">
-        <section className="mb-16 text-center">
-          <h1 className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-            Find Amazing Second-hand Treasures
-          </h1>
-          <p className="mx-auto max-w-2xl text-muted-foreground">
-            Buy and sell pre-loved items in a community that values sustainability and great deals.
-          </p>
-          
-          <div className="mt-8 max-w-xl mx-auto relative">
-            <Input
-              type="text"
-              placeholder="Search for items..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+      <main>
+        {/* Hero Section with Login/Signup */}
+        <section className="relative h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Welcome to Scrapyard
+            </h1>
+            <p className="mb-8 mx-auto max-w-2xl text-xl text-muted-foreground">
+              Join our sustainable marketplace where pre-loved items find new homes
+              and stories continue.
+            </p>
+            <div className="flex gap-4 justify-center">
+              <Button 
+                onClick={() => navigate("/signup")}
+                className="bg-accent hover:bg-accent/90 text-white px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
+              >
+                Get Started
+              </Button>
+              <Button 
+                onClick={() => navigate("/login")}
+                variant="outline"
+                className="px-8 py-6 text-lg rounded-full border-2 hover:bg-primary/5"
+              >
+                Sign In
+              </Button>
+            </div>
           </div>
         </section>
 
-        <section className="mb-16">
-          <div className="mb-8 flex items-center justify-between">
-            <h2 className="text-2xl font-semibold">Featured Items</h2>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} {...product} />
-            ))}
+        {/* Animated Reviews Section */}
+        <section className="py-16 bg-white/50 overflow-hidden">
+          <h2 className="text-3xl font-bold text-center mb-12">What Our Community Says</h2>
+          <div className="flex animate-[slide_25s_linear_infinite]">
+            <div className="flex gap-8 min-w-full">
+              {[...CUSTOMER_REVIEWS, ...CUSTOMER_REVIEWS].map((review, index) => (
+                <div
+                  key={`${review.id}-${index}`}
+                  className="min-w-[300px] bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <p className="text-muted-foreground mb-4">{review.review}</p>
+                  <div className="font-semibold">{review.name}</div>
+                  <div className="text-accent">{"★".repeat(review.rating)}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
+        {/* About Section */}
         <section className="py-16 bg-primary/5 rounded-2xl">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-4xl mx-auto text-center px-4">
             <h2 className="text-3xl font-bold mb-6">About Scrapyard</h2>
             <div className="grid md:grid-cols-3 gap-8 mb-8">
               <div>
