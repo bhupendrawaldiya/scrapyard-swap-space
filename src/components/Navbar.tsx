@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ShoppingBag, User } from "lucide-react";
+import { Home, ShoppingBag, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -15,16 +15,11 @@ export const Navbar = () => {
             <Link to="/" className="text-xl font-semibold text-primary">
               Scrapyard
             </Link>
-            {user && (
-              <>
-                <Link to="/browse">
-                  <Button variant="ghost">Browse</Button>
-                </Link>
-                <Link to="/sell">
-                  <Button variant="ghost">Sell</Button>
-                </Link>
-              </>
-            )}
+            <Link to="/">
+              <Button variant="ghost" size="icon">
+                <Home className="h-5 w-5" />
+              </Button>
+            </Link>
           </div>
 
           <div className="flex items-center gap-4">
