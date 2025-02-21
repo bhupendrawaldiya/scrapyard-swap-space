@@ -87,7 +87,10 @@ const Index = () => {
   const { user } = useAuth();
 
   const handleAddToCart = async (product: typeof DUMMY_PRODUCTS[0]) => {
+    console.log("Add to cart clicked for product:", product);
+    
     if (!user) {
+      console.log("No user logged in");
       toast({
         title: "Authentication required",
         description: "Please login to add items to your cart",
@@ -97,22 +100,38 @@ const Index = () => {
       return;
     }
 
+    console.log("User is logged in:", user.id);
+
     try {
-      const { data: existingItems } = await supabase
+      // Check if item already exists in cart
+      const { data: existingItem, error: fetchError } = await supabase
         .from('cart_items')
         .select()
         .eq('user_id', user.id)
         .eq('product_id', product.id)
-        .single();
+        .maybeSingle();
 
-      if (existingItems) {
+      if (fetchError) {
+        console.error("Error fetching existing cart item:", fetchError);
+        throw fetchError;
+      }
+
+      console.log("Existing item:", existingItem);
+
+      if (existingItem) {
+        // Update quantity if item exists
         const { error: updateError } = await supabase
           .from('cart_items')
-          .update({ quantity: existingItems.quantity + 1 })
-          .eq('id', existingItems.id);
+          .update({ quantity: existingItem.quantity + 1 })
+          .eq('id', existingItem.id);
 
-        if (updateError) throw updateError;
+        if (updateError) {
+          console.error("Error updating cart item:", updateError);
+          throw updateError;
+        }
+        console.log("Successfully updated cart item quantity");
       } else {
+        // Insert new item if it doesn't exist
         const { error: insertError } = await supabase
           .from('cart_items')
           .insert({
@@ -124,7 +143,11 @@ const Index = () => {
             quantity: 1
           });
 
-        if (insertError) throw insertError;
+        if (insertError) {
+          console.error("Error inserting cart item:", insertError);
+          throw insertError;
+        }
+        console.log("Successfully added new item to cart");
       }
 
       toast({
