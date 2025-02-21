@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Search, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 const DUMMY_PRODUCTS = [
   {
@@ -67,8 +69,21 @@ const CUSTOMER_REVIEWS = [
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleAddToCart = (product: typeof DUMMY_PRODUCTS[0]) => {
+    if (!user) {
+      // If user is not logged in, redirect to login page
+      toast({
+        title: "Authentication required",
+        description: "Please login to add items to your cart",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+
     // Get existing cart items from localStorage
     const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
     
@@ -208,3 +223,4 @@ const Index = () => {
 };
 
 export default Index;
+
