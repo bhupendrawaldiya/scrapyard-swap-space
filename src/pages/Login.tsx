@@ -43,7 +43,7 @@ const Login = () => {
             <LogIn className="mx-auto mb-4 h-12 w-12 text-accent" />
             <h1 className="text-2xl font-bold">Welcome Back</h1>
             <p className="text-sm text-muted-foreground">
-              Sign in to your account to continue
+              Login to your account to continue
             </p>
           </div>
           
@@ -71,13 +71,13 @@ const Login = () => {
               className="w-full bg-accent hover:bg-accent/90"
               disabled={loading}
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? "Logging in..." : "Login"}
             </Button>
           </form>
           
           <div className="mt-4 text-center text-sm">
             <a href="/signup" className="text-accent hover:underline">
-              Don't have an account? Sign up
+              Don't have an account? Register
             </a>
           </div>
         </Card>

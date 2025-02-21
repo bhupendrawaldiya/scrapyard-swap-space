@@ -50,11 +50,11 @@ export const Navbar = () => {
             ) : (
               <div className="flex items-center gap-2">
                 <Link to="/login">
-                  <Button variant="ghost">Sign In</Button>
+                  <Button variant="ghost">Login</Button>
                 </Link>
                 <Link to="/signup">
                   <Button variant="default" className="bg-accent hover:bg-accent/90">
-                    Sign Up
+                    Register
                   </Button>
                 </Link>
               </div>

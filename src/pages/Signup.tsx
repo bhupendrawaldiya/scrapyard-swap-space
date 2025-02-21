@@ -104,13 +104,13 @@ const Signup = () => {
               className="w-full bg-accent hover:bg-accent/90"
               disabled={loading}
             >
-              {loading ? "Creating account..." : "Sign Up"}
+              {loading ? "Creating account..." : "Register"}
             </Button>
           </form>
           
           <div className="mt-4 text-center text-sm">
             <a href="/login" className="text-accent hover:underline">
-              Already have an account? Sign in
+              Already have an account? Login
             </a>
           </div>
         </Card>
