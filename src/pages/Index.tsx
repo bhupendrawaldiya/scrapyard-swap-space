@@ -2,7 +2,9 @@
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, ShoppingCart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 const DUMMY_PRODUCTS = [
   {
@@ -64,6 +66,32 @@ const CUSTOMER_REVIEWS = [
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const { toast } = useToast();
+
+  const handleAddToCart = (product: typeof DUMMY_PRODUCTS[0]) => {
+    // Get existing cart items from localStorage
+    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    
+    // Check if item already exists in cart
+    const existingItemIndex = existingCart.findIndex((item: any) => item.id === product.id);
+    
+    if (existingItemIndex !== -1) {
+      // If item exists, increment quantity
+      existingCart[existingItemIndex].quantity += 1;
+    } else {
+      // If item doesn't exist, add it with quantity 1
+      existingCart.push({ ...product, quantity: 1 });
+    }
+    
+    // Save updated cart back to localStorage
+    localStorage.setItem("cart", JSON.stringify(existingCart));
+    
+    // Show success toast
+    toast({
+      title: "Added to cart",
+      description: `${product.name} has been added to your cart`,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-secondary/30">
@@ -106,7 +134,17 @@ const Index = () => {
                   <div className="p-4">
                     <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
                     <p className="text-muted-foreground text-sm mb-2">{product.description}</p>
-                    <p className="text-accent font-semibold">${product.price}</p>
+                    <div className="flex items-center justify-between">
+                      <p className="text-accent font-semibold">${product.price}</p>
+                      <Button 
+                        onClick={() => handleAddToCart(product)}
+                        className="bg-accent hover:bg-accent/90 text-white"
+                        size="sm"
+                      >
+                        <ShoppingCart className="h-4 w-4 mr-2" />
+                        Add to Cart
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}
