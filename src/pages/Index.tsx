@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Input } from "@/components/ui/input";
@@ -36,6 +35,20 @@ const DUMMY_PRODUCTS = [
     price: 299.99,
     description: "Vintage film camera in perfect working condition",
     image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+  },
+  {
+    id: 5,
+    name: "Vintage Watch",
+    price: 399.99,
+    description: "Elegant vintage timepiece in working condition",
+    image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+  },
+  {
+    id: 6,
+    name: "Antique Bookshelf",
+    price: 249.99,
+    description: "Beautiful wooden bookshelf from the 1940s",
+    image: "https://images.unsplash.com/photo-1588279102567-aa591ac65044?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
   }
 ];
 
@@ -74,7 +87,6 @@ const Index = () => {
 
   const handleAddToCart = (product: typeof DUMMY_PRODUCTS[0]) => {
     if (!user) {
-      // If user is not logged in, redirect to login page
       toast({
         title: "Authentication required",
         description: "Please login to add items to your cart",
@@ -84,24 +96,18 @@ const Index = () => {
       return;
     }
 
-    // Get existing cart items from localStorage
     const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
     
-    // Check if item already exists in cart
     const existingItemIndex = existingCart.findIndex((item: any) => item.id === product.id);
     
     if (existingItemIndex !== -1) {
-      // If item exists, increment quantity
       existingCart[existingItemIndex].quantity += 1;
     } else {
-      // If item doesn't exist, add it with quantity 1
       existingCart.push({ ...product, quantity: 1 });
     }
     
-    // Save updated cart back to localStorage
     localStorage.setItem("cart", JSON.stringify(existingCart));
     
-    // Show success toast
     toast({
       title: "Added to cart",
       description: `${product.name} has been added to your cart`,
@@ -112,7 +118,6 @@ const Index = () => {
     <div className="min-h-screen bg-secondary/30">
       <Navbar />
       <main>
-        {/* Hero Section with Search */}
         <section className="relative h-[70vh] flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5">
           <div className="container mx-auto px-4 text-center">
             <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -121,6 +126,24 @@ const Index = () => {
             <p className="mb-8 mx-auto max-w-2xl text-xl text-muted-foreground">
               Discover unique pre-loved treasures in our sustainable marketplace
             </p>
+            {user && (
+              <div className="flex justify-center gap-4 mb-8">
+                <Button
+                  onClick={() => navigate("/browse")}
+                  className="bg-primary hover:bg-primary/90"
+                  size="lg"
+                >
+                  Browse Items
+                </Button>
+                <Button
+                  onClick={() => navigate("/sell")}
+                  className="bg-accent hover:bg-accent/90"
+                  size="lg"
+                >
+                  Sell Your Items
+                </Button>
+              </div>
+            )}
             <div className="max-w-md mx-auto relative">
               <Input
                 type="search"
@@ -134,11 +157,10 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Marketplace Section */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">Featured Items</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {DUMMY_PRODUCTS.map((product) => (
                 <div key={product.id} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden">
                   <img
@@ -167,7 +189,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Animated Reviews Section */}
         <section className="py-16 bg-white/50 overflow-hidden">
           <h2 className="text-3xl font-bold text-center mb-12">What Our Community Says</h2>
           <div className="flex animate-[slide_25s_linear_infinite]">
@@ -186,7 +207,6 @@ const Index = () => {
           </div>
         </section>
 
-        {/* About Section */}
         <section className="py-16 bg-primary/5 rounded-2xl">
           <div className="max-w-4xl mx-auto text-center px-4">
             <h2 className="text-3xl font-bold mb-6">About Scrapyard</h2>
@@ -223,4 +243,3 @@ const Index = () => {
 };
 
 export default Index;
-

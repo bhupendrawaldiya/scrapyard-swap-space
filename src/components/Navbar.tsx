@@ -11,9 +11,21 @@ export const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b">
       <div className="container mx-auto px-4">
         <div className="h-16 flex items-center justify-between">
-          <Link to="/" className="text-xl font-semibold text-primary">
-            Scrapyard
-          </Link>
+          <div className="flex items-center gap-6">
+            <Link to="/" className="text-xl font-semibold text-primary">
+              Scrapyard
+            </Link>
+            {user && (
+              <>
+                <Link to="/browse">
+                  <Button variant="ghost">Browse</Button>
+                </Link>
+                <Link to="/sell">
+                  <Button variant="ghost">Sell</Button>
+                </Link>
+              </>
+            )}
+          </div>
 
           <div className="flex items-center gap-4">
             <Link to="/cart">
@@ -36,11 +48,16 @@ export const Navbar = () => {
                 </Button>
               </div>
             ) : (
-              <Link to="/login">
-                <Button variant="default" className="bg-accent hover:bg-accent/90">
-                  Sign In
-                </Button>
-              </Link>
+              <div className="flex items-center gap-2">
+                <Link to="/login">
+                  <Button variant="ghost">Sign In</Button>
+                </Link>
+                <Link to="/signup">
+                  <Button variant="default" className="bg-accent hover:bg-accent/90">
+                    Sign Up
+                  </Button>
+                </Link>
+              </div>
             )}
           </div>
         </div>
