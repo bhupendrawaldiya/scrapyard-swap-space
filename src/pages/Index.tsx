@@ -1,8 +1,39 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
-import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+
+const DUMMY_PRODUCTS = [
+  {
+    id: 1,
+    name: "Vintage Leather Jacket",
+    price: 89.99,
+    description: "Classic brown leather jacket in excellent condition",
+    image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+  },
+  {
+    id: 2,
+    name: "Antique Coffee Table",
+    price: 149.99,
+    description: "Beautiful wooden coffee table from the 1950s",
+    image: "https://images.unsplash.com/photo-1565791380690-ca4faec73f6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+  },
+  {
+    id: 3,
+    name: "Retro Record Player",
+    price: 199.99,
+    description: "Fully functional vintage record player with built-in speakers",
+    image: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+  },
+  {
+    id: 4,
+    name: "Classic Camera",
+    price: 299.99,
+    description: "Vintage film camera in perfect working condition",
+    image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80"
+  }
+];
 
 const CUSTOMER_REVIEWS = [
   {
@@ -32,36 +63,53 @@ const CUSTOMER_REVIEWS = [
 ];
 
 const Index = () => {
-  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
 
   return (
     <div className="min-h-screen bg-secondary/30">
       <Navbar />
       <main>
-        {/* Hero Section with Login/Signup */}
-        <section className="relative h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5">
+        {/* Hero Section with Search */}
+        <section className="relative h-[70vh] flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5">
           <div className="container mx-auto px-4 text-center">
             <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               Welcome to Scrapyard
             </h1>
             <p className="mb-8 mx-auto max-w-2xl text-xl text-muted-foreground">
-              Join our sustainable marketplace where pre-loved items find new homes
-              and stories continue.
+              Discover unique pre-loved treasures in our sustainable marketplace
             </p>
-            <div className="flex gap-4 justify-center">
-              <Button 
-                onClick={() => navigate("/signup")}
-                className="bg-accent hover:bg-accent/90 text-white px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105"
-              >
-                Get Started
-              </Button>
-              <Button 
-                onClick={() => navigate("/login")}
-                variant="outline"
-                className="px-8 py-6 text-lg rounded-full border-2 hover:bg-primary/5"
-              >
-                Sign In
-              </Button>
+            <div className="max-w-md mx-auto relative">
+              <Input
+                type="search"
+                placeholder="Search for items..."
+                className="pl-10 py-6 text-lg"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            </div>
+          </div>
+        </section>
+
+        {/* Marketplace Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">Featured Items</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {DUMMY_PRODUCTS.map((product) => (
+                <div key={product.id} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4">
+                    <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
+                    <p className="text-muted-foreground text-sm mb-2">{product.description}</p>
+                    <p className="text-accent font-semibold">${product.price}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
