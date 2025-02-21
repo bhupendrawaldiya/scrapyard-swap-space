@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const DUMMY_PRODUCTS = [
   {
@@ -85,7 +86,7 @@ const Index = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const handleAddToCart = (product: typeof DUMMY_PRODUCTS[0]) => {
+  const handleAddToCart = async (product: typeof DUMMY_PRODUCTS[0]) => {
     if (!user) {
       toast({
         title: "Authentication required",
@@ -96,22 +97,48 @@ const Index = () => {
       return;
     }
 
-    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
-    
-    const existingItemIndex = existingCart.findIndex((item: any) => item.id === product.id);
-    
-    if (existingItemIndex !== -1) {
-      existingCart[existingItemIndex].quantity += 1;
-    } else {
-      existingCart.push({ ...product, quantity: 1 });
+    try {
+      const { data: existingItems } = await supabase
+        .from('cart_items')
+        .select()
+        .eq('user_id', user.id)
+        .eq('product_id', product.id)
+        .single();
+
+      if (existingItems) {
+        const { error: updateError } = await supabase
+          .from('cart_items')
+          .update({ quantity: existingItems.quantity + 1 })
+          .eq('id', existingItems.id);
+
+        if (updateError) throw updateError;
+      } else {
+        const { error: insertError } = await supabase
+          .from('cart_items')
+          .insert({
+            user_id: user.id,
+            product_id: product.id,
+            product_name: product.name,
+            product_price: product.price,
+            product_image: product.image,
+            quantity: 1
+          });
+
+        if (insertError) throw insertError;
+      }
+
+      toast({
+        title: "Added to cart",
+        description: `${product.name} has been added to your cart`,
+      });
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add item to cart. Please try again.",
+        variant: "destructive",
+      });
     }
-    
-    localStorage.setItem("cart", JSON.stringify(existingCart));
-    
-    toast({
-      title: "Added to cart",
-      description: `${product.name} has been added to your cart`,
-    });
   };
 
   return (
